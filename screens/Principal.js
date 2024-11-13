@@ -1,9 +1,7 @@
 import React from 'react';
 import { Text, Button, Alert } from 'react-native';
 import { View, Container, TitleList, InputField, Container2 } from '../styles/adm';
-import firebase from '../Config/config';
-
-
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'; // Atualizando para o método modular
 
 class Principal extends React.Component {
   constructor(props) {
@@ -24,11 +22,12 @@ class Principal extends React.Component {
       return;
     }
 
-    firebase.auth()
-      .signInWithEmailAndPassword(this.state.email.toLowerCase(), this.state.password)
+    const auth = getAuth(); // Obtenha a instância de autenticação
+
+    signInWithEmailAndPassword(auth, email.toLowerCase(), password) // Método de login
       .then(() => {
         Alert.alert('Sucesso', 'Login realizado com sucesso!');
-        this.props.navigation.navigate('Tela3', { nome: this.state.email });
+        this.props.navigation.navigate('Tela3', { nome: email });
       })
       .catch(error => {
         const errorCode = error.code;
@@ -56,10 +55,10 @@ class Principal extends React.Component {
             placeholder="Digite seu e-mail"
             onChangeText={(texto) => this.setState({ email: texto })} 
           />
-          <TitleList> password: </TitleList>
+          <TitleList> Senha: </TitleList>
           <InputField 
             secureTextEntry 
-            placeholder="Digite sua password"
+            placeholder="Digite sua senha"
             onChangeText={(texto) => this.setState({ password: texto })} 
           />
           <Button title="Logar" onPress={() => this.ler()} />
