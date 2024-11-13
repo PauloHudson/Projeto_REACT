@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Text, Alert } from 'react-native';
 import { Container, Container2, MainView, TitleContainer, TitleText, Texto, Texto2 } from '../styles/Adm2';
-import { auth } from '../Config/config'; // Importa a autenticação do Firebase
-import { getDatabase, ref, set } from 'firebase/database'; // Importa o Database do Firebase
+import { auth } from '../Config/config';
+import { getDatabase, ref, set } from 'firebase/database';
 
-const Tela4 = ({ route }) => {
+const Tela4 = ({ route, navigation }) => {
   const nome = route.params?.nome;
   const [peso, setPeso] = useState('');
   const [altura, setAltura] = useState('');
@@ -18,7 +18,7 @@ const Tela4 = ({ route }) => {
       const imc = (pesoNum / (alturaNum * alturaNum)).toFixed(2);
       setResultado(imc);
       gerarFeedback(imc);
-      salvarIMC(imc); // Salva o IMC no banco de dados
+      salvarIMC(imc);
     } else {
       alert("Por favor, insira valores válidos!");
     }
@@ -126,6 +126,19 @@ const Tela4 = ({ route }) => {
             {feedback}
           </Texto>
         )}
+
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{
+            backgroundColor: '#6c757d',
+            padding: 15,
+            borderRadius: 5,
+            alignItems: 'center',
+            marginTop: 20,
+          }}
+        >
+          <Text style={{ color: 'white', fontWeight: 'bold' }}>Voltar para a Tela 3</Text>
+        </TouchableOpacity>
       </Container>
     </MainView>
   );
