@@ -6,7 +6,7 @@ Bem-vindo ao **HealthFit**! Aqui, você poderá calcular seu Índice de Massa Co
 
 - **Cálculo do IMC**: Descubra rapidamente se seu IMC está em uma faixa saudável.
 - **Atualização de Avatar**: Tire uma foto com a câmera e atualize sua foto de perfil.
-- **Autenticação do usuário **: Faça login usando seu Email Pessoal e Senha
+- **Autenticação do usuário**: Faça login usando seu Email Pessoal e Senha
 - **Edição do Nome de Usuário**: Altere seu nome de usuário e salve diretamente no Firebase.
 - **Sincronização com Firebase**: Os dados são salvos no Firebase Realtime Database e Authentication.
 
@@ -25,8 +25,8 @@ Antes de iniciar, certifique-se de ter as seguintes ferramentas instaladas:
 
 ##  Instalando Dependências
 
-- **No console digite npm install
+- No console digite npm install
 
 ##  Rodando o código
 
-- **No console digite npx expo start
+- No console digite npx expo start
