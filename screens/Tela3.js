@@ -5,7 +5,6 @@ import { MainView, Container, Container2, TitleContainer, TitleText, Texto, Styl
 import { auth } from '../Config/config';
 import { getDatabase, ref, get } from 'firebase/database';
 
-
 class Tela3 extends React.Component {
   constructor(props) {
     super(props);
@@ -20,6 +19,11 @@ class Tela3 extends React.Component {
   componentDidMount() {
     this.getUsuario();
     this.getUltimaMedicao();
+
+    // Adiciona um listener para detectar quando a Tela 3 é novamente focada
+    this.props.navigation.addListener('focus', () => {
+      this.getUltimaMedicao();  // Atualiza o IMC sempre que a tela for focada
+    });
   }
 
   getUsuario = () => {
@@ -92,8 +96,7 @@ class Tela3 extends React.Component {
 
   handleNavigateToEditAvatar = () => {
     this.props.navigation.navigate('Edicao', { avatarUrl: this.state.avatarUrl });
- };
- 
+  };
 
   render() {
     const { usuario, ultimaMedicao, recomendacaoDieta, avatarUrl } = this.state;
