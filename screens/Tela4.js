@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, Alert } from 'react-native';
 import { Container, Container2, MainView, TitleContainer, TitleText, Texto, Texto2 } from '../styles/Adm2';
+import { auth } from '../Config/config'; // Importa a autenticação do Firebase
+import { getDatabase, ref, set } from 'firebase/database'; // Importa o Database do Firebase
 
-const Tela4 = ({ route }) => { // Recebendo `route` como uma prop
-  const nome = route.params?.nome; // Acessando o nome da rota
+const Tela4 = ({ route }) => {
+  const nome = route.params?.nome;
   const [peso, setPeso] = useState('');
   const [altura, setAltura] = useState('');
   const [resultado, setResultado] = useState(null);
@@ -11,13 +13,32 @@ const Tela4 = ({ route }) => { // Recebendo `route` como uma prop
 
   const calcularIMC = () => {
     const pesoNum = parseFloat(peso);
-    const alturaNum = parseFloat(altura) / 100; 
+    const alturaNum = parseFloat(altura) / 100;
     if (pesoNum > 0 && alturaNum > 0) {
       const imc = (pesoNum / (alturaNum * alturaNum)).toFixed(2);
       setResultado(imc);
       gerarFeedback(imc);
+      salvarIMC(imc); // Salva o IMC no banco de dados
     } else {
       alert("Por favor, insira valores válidos!");
+    }
+  };
+
+  const salvarIMC = (imc) => {
+    const user = auth.currentUser;
+    if (user) {
+      const db = getDatabase();
+      const imcRef = ref(db, 'users/' + user.uid + '/imc');
+      set(imcRef, imc)
+        .then(() => {
+          Alert.alert("Sucesso", "IMC salvo com sucesso!");
+        })
+        .catch((error) => {
+          console.error("Erro ao salvar o IMC: ", error);
+          Alert.alert("Erro", "Não foi possível salvar o IMC.");
+        });
+    } else {
+      Alert.alert("Erro", "Usuário não autenticado.");
     }
   };
 
@@ -42,9 +63,6 @@ const Tela4 = ({ route }) => { // Recebendo `route` como uma prop
     setFeedback('');
   };
 
-  // Aqui está onde o JSX deve começar
-
-
   return (
     <MainView>
       <Container>
@@ -52,7 +70,7 @@ const Tela4 = ({ route }) => { // Recebendo `route` como uma prop
           <TitleText>Cálculo do IMC</TitleText>
         </TitleContainer>
         <TitleContainer>
-        <TitleText>Bem-vindo(a), {nome || 'Usuário'}!</TitleText>
+          <TitleText>Bem-vindo(a), {nome || 'Usuário'}!</TitleText>
         </TitleContainer>
 
         <Texto2 style={{color: "black"}}>Insira seu peso (kg):</Texto2>
