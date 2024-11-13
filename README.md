@@ -30,3 +30,10 @@ Antes de iniciar, certifique-se de ter as seguintes ferramentas instaladas:
 ##  Rodando o código
 
 - No console digite npx expo start
+
+##  Evidências do projeto (telas)
+![image](https://github.com/user-attachments/assets/5ef86d4e-e730-45bc-8c62-585b1cdb674d)
+![image](https://github.com/user-attachments/assets/2d813a1b-257e-46c1-ada4-a452934cd5af)
+![image](https://github.com/user-attachments/assets/5b7b4ffa-a311-45cd-8c8b-82993b2bb9fa)
+![image](https://github.com/user-attachments/assets/ec0b2283-1e4a-4ceb-a948-6f6d9b1daa9b)
+![image](https://github.com/user-attachments/assets/b89da965-f13a-4c0c-9944-626669aab692)
