@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 
 // Parte branca
 export const Container = styled.SafeAreaView`
-  flex: 3;
+  flex: 5;
   background-color: #FFFFFF;
   justify-content: center;
   align-items: center;
