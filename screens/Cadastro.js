@@ -1,35 +1,47 @@
 import React from 'react';
 import { Text, Button, Alert } from 'react-native';
 import { View, Container, TitleList, InputField, Container2 } from '../styles/adm';
-import firebase from '../Config/config';
-
-
-
-
+import { auth } from '../Config/config'; // Importação do auth do arquivo de configuração
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { getDatabase, ref, set } from 'firebase/database';
 
 class Cadastro extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: '',
-      email: '', 
-      password: '',
+      user: '',    // Nome do usuário
+      email: '',   // Email do usuário
+      password: '', // Senha do usuário
     };
   }
 
   gravar() {
-    console.log("foi");
-    const { email, password } = this.state;
-    if (!email || !password) {
+    const { email, password, user } = this.state;
+
+    if (!email || !password || !user) {
       Alert.alert('Erro', 'Preencha todos os campos.');
       return;
     }
-  
-    firebase.auth()
-      .createUserWithEmailAndPassword(email.toLowerCase(), password)
-      .then(() => {
-        Alert.alert('Sucesso', 'Usuário cadastrado com sucesso!');
-        this.props.navigation.navigate('Login');
+
+    // Usando a função createUserWithEmailAndPassword de Firebase 9+
+    createUserWithEmailAndPassword(auth, email.toLowerCase(), password)
+      .then((userCredential) => {
+        // Recupera o UID do usuário recém-criado
+        const userId = userCredential.user.uid;
+
+        // Salvar o nome do usuário no banco de dados Firebase
+        const db = getDatabase();
+        set(ref(db, 'users/' + userId), {
+          username: user,  // Nome do usuário
+          email: email,    // Email do usuário
+        })
+        .then(() => {
+          Alert.alert('Sucesso', 'Usuário cadastrado com sucesso!');
+          this.props.navigation.navigate('Login');
+        })
+        .catch(error => {
+          Alert.alert('Erro', "Ocorreu um erro ao salvar os dados: " + error.message);
+        });
       })
       .catch(error => {
         const errorCode = error.code;
